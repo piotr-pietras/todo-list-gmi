@@ -1,9 +1,13 @@
-export type TaskStatus = 'TO_DO' | 'IN_PROGRESS' | 'DONE';
+export enum TaskStatus {
+  todo = 'TO_DO',
+  inProgress = 'IN_PROGRESS',
+  done = 'DONE',
+}
 
 export interface Task {
-  id: string;
+  id: number;
   title: string;
   description: string;
-  status: TaskStatus;
-  timestamp: number;
+  status: string;
+  timestamp: Date;
 }

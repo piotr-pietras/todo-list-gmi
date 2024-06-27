@@ -1,5 +1,5 @@
-import { Task, TaskStatus } from '../interface/task.interface';
+import { Task } from '../interface/task.interface';
 
 export class TaskUpdateDto implements Pick<Task, 'status'> {
-  status: TaskStatus;
+  status: string;
 }

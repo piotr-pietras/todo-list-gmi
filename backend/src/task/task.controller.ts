@@ -9,38 +9,34 @@ import {
 } from '@nestjs/common';
 import { TaskAddDto } from './dto/task-add.dto';
 import { TaskUpdateDto } from './dto/task-update.dto';
+import { TaskService } from './task.service';
 
 @Controller('tasks')
 export class TaskController {
+  constructor(private taskService: TaskService) {}
+
   @Get()
-  getAll(): string {
-    return 'return all';
+  async getAll() {
+    return this.taskService.getAll();
   }
 
   @Get(':id')
-  getById(@Param('id') id: string): string {
-    console.log(id);
-    return 'get by id';
+  async getById(@Param('id') id: string) {
+    return this.taskService.getById(id);
   }
 
   @Post('')
-  add(@Body() taskAddDto: TaskAddDto): string {
-    console.log(taskAddDto);
-    return 'add';
+  addOne(@Body() taskAddDto: TaskAddDto) {
+    return this.taskService.addOne(taskAddDto);
   }
 
   @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Body() taskUpdateDto: TaskUpdateDto,
-  ): string {
-    console.log(id);
-    console.log(taskUpdateDto);
-    return 'update';
+  updateOne(@Param('id') id: string, @Body() taskUpdateDto: TaskUpdateDto) {
+    return this.taskService.updateOne(id, taskUpdateDto);
   }
 
   @Delete(':id')
-  delete(): string {
-    return 'delete';
+  deleteOne(@Param('id') id: string) {
+    return this.taskService.deleteOne(id);
   }
 }
