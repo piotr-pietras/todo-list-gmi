@@ -17,3 +17,19 @@ services:
       - type: bind
         source: ./backend/src
         target: /src
+
+  db:
+    container_name: todo-list-gmi-database
+    image: postgres:latest
+    restart: always
+    # Create volume in order to persist data after container is removed
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # Password for Postgres user
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+
+volumes:
+  pgdata:
