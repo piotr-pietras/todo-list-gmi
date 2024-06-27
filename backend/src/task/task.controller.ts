@@ -10,6 +10,7 @@ import {
 import { TaskAddDto } from './dto/task-add.dto';
 import { TaskUpdateDto } from './dto/task-update.dto';
 import { TaskService } from './task.service';
+import { TaskIdQueryDto } from './dto/task-id-query.dto';
 
 @Controller('tasks')
 export class TaskController {
@@ -21,7 +22,7 @@ export class TaskController {
   }
 
   @Get(':id')
-  async getById(@Param('id') id: string) {
+  async getById(@Param() { id }: TaskIdQueryDto) {
     return this.taskService.getById(id);
   }
 
@@ -31,12 +32,15 @@ export class TaskController {
   }
 
   @Put(':id')
-  updateOne(@Param('id') id: string, @Body() taskUpdateDto: TaskUpdateDto) {
+  updateOne(
+    @Param() { id }: TaskIdQueryDto,
+    @Body() taskUpdateDto: TaskUpdateDto,
+  ) {
     return this.taskService.updateOne(id, taskUpdateDto);
   }
 
   @Delete(':id')
-  deleteOne(@Param('id') id: string) {
+  deleteOne(@Param() { id }: TaskIdQueryDto) {
     return this.taskService.deleteOne(id);
   }
 }
