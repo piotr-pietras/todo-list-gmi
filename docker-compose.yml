@@ -1,0 +1,19 @@
+version: "3.1"
+
+services:
+  backend:
+    env_file:
+      - .env
+    container_name: todo-list-gmi-backend
+    build:
+      dockerfile: dockerfile.backend
+      context: .
+    restart: always
+    ports:
+      - "${HOST_PORT}:${HOST_PORT}"
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT}
+    volumes:
+      - type: bind
+        source: ./backend/src
+        target: /src
