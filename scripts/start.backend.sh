@@ -4,11 +4,12 @@ echo Env is set to $ENVIRONMENT
 
 # Start
 if [ $ENVIRONMENT = "development" ]; then
+    npx prisma migrate dev
     npm run start:dev
 elif [ $ENVIRONMENT = "production" ]; then
+    npx prisma migrate deploy
     npm run build
-    cd dist
-    node main.js
+    node ./dist/main.js
 else
     echo \n ======= \n Envrionment variable is not set correctly
 fi

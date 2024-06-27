@@ -22,14 +22,17 @@ services:
     container_name: todo-list-gmi-database
     image: postgres:latest
     restart: always
-    # Create volume in order to persist data after container is removed
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    # Password for Postgres user
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - ${DB_PORT}:${DB_PORT}
+      - ${DB_PORT}:5432
 
-volumes:
-  pgdata:
+  pgadmin:
+    container_name: todo-list-gmi-pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "${PGADMIN_PORT}:80"
