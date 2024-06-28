@@ -1,11 +1,15 @@
 import { TaskBox } from "@/components/TaskBox";
+import { colors } from "@/constants/colors";
 import { selectIsInit } from "@/services/redux/app.selector";
 import { appSlice } from "@/services/redux/app.slice";
-import { selectAllTasks } from "@/services/redux/task.selector";
+import {
+  selectTasksInProgress,
+  selectTasksNotInProgress,
+} from "@/services/redux/task.selector";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-import { Button } from "react-native-paper";
+import { StyleSheet, ScrollView, View } from "react-native";
+import { Button, Text } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 
 const { appInit$ } = appSlice.actions;
@@ -13,7 +17,9 @@ const { appInit$ } = appSlice.actions;
 export default function HomeScreen() {
   const dispatch = useDispatch();
   const isInit = useSelector(selectIsInit);
-  const tasks = useSelector(selectAllTasks);
+  const tasksIP = useSelector(selectTasksInProgress);
+  const tasksNIP = useSelector(selectTasksNotInProgress);
+
   const router = useRouter();
 
   const onPress = () => {
@@ -33,10 +39,20 @@ export default function HomeScreen() {
         style={styles.container}
         contentContainerStyle={{ alignItems: "center" }}
       >
+        {tasksIP.length ? (
+          tasksIP.map((task) => <TaskBox key={task.id} {...task} />)
+        ) : (
+          <Text style={styles.text} variant="bodyLarge">
+            There is no task in progress
+          </Text>
+        )}
+        <View style={styles.divider} />
+
         <Button icon={"plus"} mode="elevated" onPress={onPress}>
           add task
         </Button>
-        {tasks.map((task) => (
+
+        {tasksNIP.map((task) => (
           <TaskBox key={task.id} {...task} />
         ))}
       </ScrollView>
@@ -49,5 +65,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginVertical: 10,
     paddingHorizontal: 10,
+  },
+  divider: {
+    width: "100%",
+    height: 1,
+    backgroundColor: colors.lightGrey,
+    margin: 10,
+  },
+  text: {
+    color: colors.lightGrey,
   },
 });

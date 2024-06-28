@@ -3,4 +3,5 @@ export const colors = {
   alert: "#FF5964",
   info: "#067BC2",
   lightGrey: "#00000033",
+  black: "#000000",
 };

@@ -12,19 +12,21 @@ import { useRouter } from "expo-router";
 import { taskSlice } from "@/services/redux/task.slice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { selectDeletePending } from "@/services/redux/task.selector";
+import { selectTaskPednings } from "@/services/redux/task.selector";
 import { colors } from "@/constants/colors";
+import { getIconBasedOnStatus } from "@/helpers/icon";
 
-const { deleteOne$ } = taskSlice.actions;
+const { deleteOne$, updateOne$ } = taskSlice.actions;
 
 interface Props extends Task {}
 
 export const TaskBox = (props: Props) => {
   const dispatch = useDispatch();
-  const deletePendings = useSelector(selectDeletePending);
+  const deletePendings = useSelector(selectTaskPednings);
   const isPending = deletePendings.includes(props.id);
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const { icon, color } = getIconBasedOnStatus(props.status);
 
   const onEdit = () => {
     router.navigate({
@@ -37,6 +39,15 @@ export const TaskBox = (props: Props) => {
   const onDelete = () => {
     dispatch(deleteOne$(props.id));
     setOpen(false);
+  };
+
+  const onPress = () => {
+    if (props.status === "TO_DO") {
+      dispatch(updateOne$({ ...props, status: "IN_PROGRESS" }));
+    }
+    if (props.status === "IN_PROGRESS") {
+      dispatch(updateOne$({ ...props, status: "DONE" }));
+    }
   };
 
   return (
@@ -56,6 +67,12 @@ export const TaskBox = (props: Props) => {
       <View
         style={{ ...styles.contentContainer, opacity: isPending ? 0.5 : 1 }}
       >
+        <IconButton
+          onPress={onPress}
+          icon={icon}
+          iconColor={color}
+          size={30}
+        />
         <Text style={styles.title} numberOfLines={2} variant="bodyLarge">
           {props.title}
         </Text>
@@ -63,7 +80,7 @@ export const TaskBox = (props: Props) => {
           visible={open}
           onDismiss={() => setOpen(false)}
           anchor={
-            <IconButton onPress={() => setOpen(true)} icon={"menu"} size={24} />
+            <IconButton onPress={() => setOpen(true)} icon={"menu"} size={30} />
           }
         >
           <Menu.Item leadingIcon={"pencil"} onPress={onEdit} title="Edit" />

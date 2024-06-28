@@ -16,13 +16,13 @@ export const taskEntity = createEntityAdapter({
 interface InitialState {
   entity: EntityState<Task, number>;
   errorMessages: string[];
-  deletePending: number[];
+  pendings: number[];
 }
 
 const initialState: InitialState = {
   entity: taskEntity.getInitialState(),
   errorMessages: [],
-  deletePending: [],
+  pendings: [],
 };
 
 export const taskSlice = createSlice({
@@ -59,11 +59,11 @@ export const taskSlice = createSlice({
       taskEntity.removeOne(state.entity, payload.id);
     },
     deleteOne$: (_, _2: PayloadAction<number>) => {},
-    pushDeletePending: (state, { payload }: PayloadAction<number>) => {
-      state.deletePending = [...state.deletePending, payload];
+    pushPending: (state, { payload }: PayloadAction<number>) => {
+      state.pendings = [...state.pendings, payload];
     },
-    popDeletePending: (state, { payload }: PayloadAction<number>) => {
-      state.deletePending = state.deletePending.filter((id) => id !== payload);
+    popPending: (state, { payload }: PayloadAction<number>) => {
+      state.pendings = state.pendings.filter((id) => id !== payload);
     },
   },
 });

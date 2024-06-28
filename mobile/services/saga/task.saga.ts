@@ -1,21 +1,15 @@
-import { call, put, takeLeading } from "redux-saga/effects";
+import { call, put, takeLatest, takeLeading } from "redux-saga/effects";
 import { appSlice } from "../redux/app.slice";
 import { deleteOneTask, postOneTask, updateOneTask } from "@/helpers/backend";
 import { taskSlice } from "../redux/task.slice";
 import { router } from "expo-router";
 
-const {
-  addOne,
-  addMessages,
-  updateOne,
-  daleteOne,
-  popDeletePending,
-  pushDeletePending,
-} = taskSlice.actions;
+const { addOne, addMessages, updateOne, daleteOne, popPending, pushPending } =
+  taskSlice.actions;
 const { isLoading } = appSlice.actions;
 
 export function* addTaskSaga() {
-  yield takeLeading(taskSlice.actions.addOne$, function* ({ payload }) {
+  yield takeLatest(taskSlice.actions.addOne$, function* ({ payload }) {
     try {
       yield put(isLoading(true));
       const task: Awaited<ReturnType<typeof postOneTask>> = yield call(
@@ -32,8 +26,9 @@ export function* addTaskSaga() {
 }
 
 export function* updateTaskSaga() {
-  yield takeLeading(taskSlice.actions.updateOne$, function* ({ payload }) {
+  yield takeLatest(taskSlice.actions.updateOne$, function* ({ payload }) {
     try {
+      yield put(pushPending(payload.id));
       yield put(isLoading(true));
       const task: Awaited<ReturnType<typeof updateOneTask>> = yield call(
         updateOneTask,
@@ -44,14 +39,15 @@ export function* updateTaskSaga() {
     } catch (error) {
       yield put(addMessages((error as any)?.message || []));
     }
+    yield put(popPending(payload.id));
     yield put(isLoading(false));
   });
 }
 
 export function* deleteTaskSaga() {
-  yield takeLeading(taskSlice.actions.deleteOne$, function* ({ payload }) {
+  yield takeLatest(taskSlice.actions.deleteOne$, function* ({ payload }) {
     try {
-      yield put(pushDeletePending(payload));
+      yield put(pushPending(payload));
       yield put(isLoading(true));
       const task: Awaited<ReturnType<typeof deleteOneTask>> = yield call(
         deleteOneTask,
@@ -62,7 +58,7 @@ export function* deleteTaskSaga() {
     } catch (error) {
       yield put(addMessages((error as any)?.message || []));
     }
-    yield put(popDeletePending(payload));
+    yield put(popPending(payload));
     yield put(isLoading(false));
   });
 }
