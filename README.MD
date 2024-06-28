@@ -9,7 +9,7 @@ How to set dev environment
 ### 1) Config
 
 Firstly your mobile with expo and backend server must be at the same network (wifi)
-Then check ip your device (laptop) on which you are going to start backend server
+Then check your device ip (laptop) on which you are going to start backend server
 
 for linux:
 ```
@@ -40,7 +40,3 @@ cd mobile
 npm run injectEnv
 npm start
 ```
-
-## Env
-
-Env file should be enlisted in `.gitignore`

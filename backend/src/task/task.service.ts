@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { Task, TaskStatus } from './interface/task.interface';
+import { Task } from './interface/task.interface';
 import { TaskAddDto } from './dto/task-add.dto';
 import { TaskUpdateDto } from './dto/task-update.dto';
 
@@ -20,7 +20,6 @@ export class TaskService {
     return this.prisma.task.create({
       data: {
         ...taskAddDto,
-        status: TaskStatus.todo,
       },
     });
   }
