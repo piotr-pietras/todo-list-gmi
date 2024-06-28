@@ -9,3 +9,5 @@ export const selectAllTasks = (state: Store) =>
   selectTaskEntity.selectAll(state);
 export const selectErrorMessages = (state: Store) =>
   state.taskSlice.errorMessages;
+export const selectDeletePending = (state: Store) =>
+  state.taskSlice.deletePending;

@@ -1,10 +1,17 @@
 import { call, put, takeLeading } from "redux-saga/effects";
 import { appSlice } from "../redux/app.slice";
-import { postOneTask, updateOneTask } from "@/helpers/backend";
+import { deleteOneTask, postOneTask, updateOneTask } from "@/helpers/backend";
 import { taskSlice } from "../redux/task.slice";
 import { router } from "expo-router";
 
-const { addOne, clearMessages, addMessages, updateOne } = taskSlice.actions;
+const {
+  addOne,
+  addMessages,
+  updateOne,
+  daleteOne,
+  popDeletePending,
+  pushDeletePending,
+} = taskSlice.actions;
 const { isLoading } = appSlice.actions;
 
 export function* addTaskSaga() {
@@ -16,7 +23,6 @@ export function* addTaskSaga() {
         payload
       );
       yield put(addOne(task));
-      yield put(clearMessages());
       router.navigate("/");
     } catch (error) {
       yield put(addMessages((error as any)?.message || []));
@@ -34,11 +40,29 @@ export function* updateTaskSaga() {
         payload
       );
       yield put(updateOne(task));
-      yield put(clearMessages());
       router.navigate("/");
     } catch (error) {
       yield put(addMessages((error as any)?.message || []));
     }
+    yield put(isLoading(false));
+  });
+}
+
+export function* deleteTaskSaga() {
+  yield takeLeading(taskSlice.actions.deleteOne$, function* ({ payload }) {
+    try {
+      yield put(pushDeletePending(payload));
+      yield put(isLoading(true));
+      const task: Awaited<ReturnType<typeof deleteOneTask>> = yield call(
+        deleteOneTask,
+        payload
+      );
+      yield put(daleteOne(task));
+      router.navigate("/");
+    } catch (error) {
+      yield put(addMessages((error as any)?.message || []));
+    }
+    yield put(popDeletePending(payload));
     yield put(isLoading(false));
   });
 }

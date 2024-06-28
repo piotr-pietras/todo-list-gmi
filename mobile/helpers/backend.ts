@@ -54,3 +54,14 @@ export const updateOneTask = async (
   }
   return payload;
 };
+
+export const deleteOneTask = async (id: number): Promise<Task> => {
+  const res = await fetch(`${url}/tasks/${id}`, {
+    method: "DELETE",
+  });
+  const payload = await res.json();
+  if (payload?.error) {
+    throw payload;
+  }
+  return payload;
+};
