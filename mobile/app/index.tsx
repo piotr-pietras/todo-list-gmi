@@ -7,7 +7,7 @@ import {
   selectTasksNotInProgress,
 } from "@/services/redux/task.selector";
 import { Stack, useRouter } from "expo-router";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, ScrollView, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   text: {
+    margin: 20,
     color: colors.lightGrey,
   },
 });

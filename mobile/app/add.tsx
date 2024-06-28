@@ -18,9 +18,10 @@ type Params = {
 };
 
 export default function AddScreen() {
-  const dispatch = useDispatch();
   const params = useLocalSearchParams<Params>();
   const type = params?.id ? "EDIT" : "ADD";
+
+  const dispatch = useDispatch();
   const [title, setTitle] = useState(params?.title || "");
   const [description, setDescription] = useState(params?.description || "");
   const [status, setStatus] = useState<Task["status"]>(
@@ -84,10 +85,9 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
+    gap: 10,
   },
   radioContainer: {
-    marginTop: 20,
-    gap: 10,
     justifyContent: "center",
     flexDirection: "row",
   },

@@ -10,6 +10,7 @@ export default function RootLayout() {
       <PaperProvider>
         <Stack>
           <Stack.Screen name="add" />
+          <Stack.Screen name="info" />
         </Stack>
       </PaperProvider>
     </Provider>

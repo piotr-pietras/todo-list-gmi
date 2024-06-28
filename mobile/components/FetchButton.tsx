@@ -12,6 +12,7 @@ export const FetchButton = ({ type, onPress }: Props) => {
   const isLoading = useSelector(selectIsLoading);
   const color = type === "ADD" ? colors.success : colors.info;
   const text = type === "ADD" ? "add" : "edit";
+  const icon = type === "ADD" ? "plus" : "pencil";
   return (
     <Button
       contentStyle={{ backgroundColor: color }}
@@ -19,7 +20,7 @@ export const FetchButton = ({ type, onPress }: Props) => {
       loading={isLoading}
       onPress={onPress}
       mode="contained"
-      icon={"plus"}
+      icon={icon}
     >
       {text}
     </Button>
