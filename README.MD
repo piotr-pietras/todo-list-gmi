@@ -12,11 +12,13 @@ Firstly your mobile with expo and backend server must be at the same network (wi
 Then check your device ip (laptop) on which you are going to start backend server
 
 for linux:
+
 ```
 hostname -I
 ```
 
 for windows:
+
 ```
 ipconfig
 ```
@@ -39,4 +41,16 @@ In order to start expo framework firstly inject env variables then start the fra
 cd mobile
 npm run injectEnv
 npm start
+```
+
+## Doc
+
+Documentaion is available at `http://localhost:3000/api` if backend container is running
+
+## E2E test
+
+In order to start e2e tests for api type
+```
+cd backend
+npm run test:e2e
 ```

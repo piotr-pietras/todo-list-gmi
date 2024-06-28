@@ -1,4 +1,4 @@
-import { call, put, takeLatest, takeLeading } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import { appSlice } from "../redux/app.slice";
 import { deleteOneTask, postOneTask, updateOneTask } from "@/helpers/backend";
 import { taskSlice } from "../redux/task.slice";
@@ -9,7 +9,7 @@ const { addOne, addMessages, updateOne, daleteOne, popPending, pushPending } =
 const { isLoading } = appSlice.actions;
 
 export function* addTaskSaga() {
-  yield takeLatest(taskSlice.actions.addOne$, function* ({ payload }) {
+  yield takeEvery(taskSlice.actions.addOne$, function* ({ payload }) {
     try {
       yield put(isLoading(true));
       const task: Awaited<ReturnType<typeof postOneTask>> = yield call(
@@ -26,7 +26,7 @@ export function* addTaskSaga() {
 }
 
 export function* updateTaskSaga() {
-  yield takeLatest(taskSlice.actions.updateOne$, function* ({ payload }) {
+  yield takeEvery(taskSlice.actions.updateOne$, function* ({ payload }) {
     try {
       yield put(pushPending(payload.id));
       yield put(isLoading(true));
@@ -45,7 +45,7 @@ export function* updateTaskSaga() {
 }
 
 export function* deleteTaskSaga() {
-  yield takeLatest(taskSlice.actions.deleteOne$, function* ({ payload }) {
+  yield takeEvery(taskSlice.actions.deleteOne$, function* ({ payload }) {
     try {
       yield put(pushPending(payload));
       yield put(isLoading(true));
