@@ -24,16 +24,13 @@ export default function AddScreen() {
   const dispatch = useDispatch();
   const [title, setTitle] = useState(params?.title || "");
   const [description, setDescription] = useState(params?.description || "");
-  const [status, setStatus] = useState<Task["status"]>(
-    (params?.status as Task["status"]) || "TO_DO"
-  );
+  const [status, setStatus] = useState(params?.status || "TO_DO");
+  const task = { title, description, status };
 
   const onPress = () => {
-    if (type === "ADD") dispatch(addOne$({ description, status, title }));
+    if (type === "ADD") dispatch(addOne$(task));
     if (type === "EDIT" && params.id)
-      dispatch(
-        updateOne$({ id: parseInt(params.id), description, status, title })
-      );
+      dispatch(updateOne$({ id: parseInt(params.id), ...task }));
   };
 
   return (
@@ -58,7 +55,7 @@ export default function AddScreen() {
             onChangeText={(text) => setDescription(text)}
           />
           <RadioButton.Group
-            onValueChange={(s) => setStatus(s as Task["status"])}
+            onValueChange={(status) => setStatus(status)}
             value={status}
           >
             <View style={styles.radioContainer}>

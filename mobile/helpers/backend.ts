@@ -5,8 +5,8 @@ export interface Task {
   id: number;
   title: string;
   description: string;
-  status: "TO_DO" | "IN_PROGRESS" | "DONE";
-  timestamp: Date;
+  status: string;
+  timestamp: string;
 }
 
 const url = `http://${env.HOST_URL}:${env.HOST_PORT}`;
