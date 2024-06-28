@@ -36,3 +36,21 @@ export const postOneTask = async (
   }
   return payload;
 };
+
+export const updateOneTask = async (
+  body: Pick<Task, "title" | "description" | "status" | "id">
+): Promise<Task> => {
+  const { id, ...rest } = body;
+  const res = await fetch(`${url}/tasks/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(rest),
+  });
+  const payload = await res.json();
+  if (payload?.error) {
+    throw payload;
+  }
+  return payload;
+};

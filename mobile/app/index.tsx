@@ -2,7 +2,7 @@ import { TaskBox } from "@/components/TaskBox";
 import { selectIsInit } from "@/services/redux/app.selector";
 import { appSlice } from "@/services/redux/app.slice";
 import { selectAllTasks } from "@/services/redux/task.selector";
-import { Stack, Link, router } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { Button } from "react-native-paper";
@@ -14,6 +14,7 @@ export default function HomeScreen() {
   const dispatch = useDispatch();
   const isInit = useSelector(selectIsInit);
   const tasks = useSelector(selectAllTasks);
+  const router = useRouter();
 
   const onPress = () => {
     router.navigate("/add");

@@ -1,32 +1,45 @@
+import { FetchButton } from "@/components/FetchButton";
+import { TaskMessages } from "@/components/TaskMessages";
 import { colors } from "@/constants/colors";
 import { Task } from "@/helpers/backend";
-import { selectIsLoading } from "@/services/redux/app.selector";
-import { selectErrorMessages } from "@/services/redux/task.selector";
 import { taskSlice } from "@/services/redux/task.slice";
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, RadioButton, TextInput, Text } from "react-native-paper";
-import { useSelector } from "react-redux";
+import { RadioButton, TextInput, Text } from "react-native-paper";
 import { useDispatch } from "react-redux";
 
-const { addOne$ } = taskSlice.actions;
+const { addOne$, updateOne$ } = taskSlice.actions;
+type Params = {
+  id?: string;
+  title?: string;
+  description?: string;
+  status?: string;
+};
 
 export default function AddScreen() {
   const dispatch = useDispatch();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState<Task["status"]>("TO_DO");
-  const isLoading = useSelector(selectIsLoading);
-  const messages = useSelector(selectErrorMessages);
+  const params = useLocalSearchParams<Params>();
+  const type = params?.id ? "EDIT" : "ADD";
+  const [title, setTitle] = useState(params?.title || "");
+  const [description, setDescription] = useState(params?.description || "");
+  const [status, setStatus] = useState<Task["status"]>(
+    (params?.status as Task["status"]) || "TO_DO"
+  );
 
   const onPress = () => {
-    dispatch(addOne$({ description, status, title }));
+    if (type === "ADD") dispatch(addOne$({ description, status, title }));
+    if (type === "EDIT" && params.id)
+      dispatch(
+        updateOne$({ id: parseInt(params.id), description, status, title })
+      );
   };
 
   return (
     <>
-      <Stack.Screen options={{ title: "Add Task" }} />
+      <Stack.Screen
+        options={{ title: type === "EDIT" ? "Edit Task" : "Add Task" }}
+      />
       <View style={styles.container}>
         <View style={styles.contentContainer}>
           <TextInput
@@ -55,20 +68,8 @@ export default function AddScreen() {
           </RadioButton.Group>
         </View>
         <View>
-          {messages.map((message) => (
-            <Text key={message} style={styles.message}>
-              {message}
-            </Text>
-          ))}
-          <Button
-            disabled={isLoading}
-            loading={isLoading}
-            onPress={onPress}
-            mode="contained"
-            icon={"plus"}
-          >
-            Add
-          </Button>
+          <TaskMessages />
+          <FetchButton type={params?.id ? "EDIT" : "ADD"} onPress={onPress} />
         </View>
       </View>
     </>

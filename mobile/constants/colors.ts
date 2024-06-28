@@ -1,4 +1,5 @@
 export const colors = {
-  success: "#40F99B",
+  success: "#A5C882",
   alert: "#FF5964",
+  info: "#067BC2",
 };
