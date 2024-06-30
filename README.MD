@@ -40,6 +40,7 @@ In order to start expo framework firstly inject env variables then start the fra
 ```
 cd mobile
 npm run injectEnv
+npm install
 npm start
 ```
 

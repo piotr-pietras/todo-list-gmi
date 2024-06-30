@@ -17,10 +17,18 @@ services:
       - type: bind
         source: ./backend/src
         target: /src
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     container_name: todo-list-gmi-database
     image: postgres:latest
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 4s
+      timeout: 4s
+      retries: 9999
     restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

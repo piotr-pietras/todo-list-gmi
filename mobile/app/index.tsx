@@ -19,7 +19,6 @@ export default function HomeScreen() {
   const isInit = useSelector(selectIsInit);
   const tasksIP = useSelector(selectTasksInProgress);
   const tasksNIP = useSelector(selectTasksNotInProgress);
-
   const router = useRouter();
 
   const onPress = () => {
@@ -48,7 +47,12 @@ export default function HomeScreen() {
         )}
         <View style={styles.divider} />
 
-        <Button icon={"plus"} mode="elevated" onPress={onPress}>
+        <Button
+          style={styles.button}
+          icon={"plus"}
+          mode="elevated"
+          onPress={onPress}
+        >
           add task
         </Button>
 
@@ -75,5 +79,8 @@ const styles = StyleSheet.create({
   text: {
     margin: 20,
     color: colors.lightGrey,
+  },
+  button: {
+    marginBottom: 10,
   },
 });

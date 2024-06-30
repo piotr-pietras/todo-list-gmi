@@ -1,6 +1,6 @@
 import { colors } from "@/constants/colors";
 import { selectIsLoading } from "@/services/redux/app.selector";
-import { Button, Text } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { useSelector } from "react-redux";
 
 interface Props {
